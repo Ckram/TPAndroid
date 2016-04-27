@@ -1,5 +1,8 @@
 package ckram.tpdeezer;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +10,7 @@ import java.util.List;
  * @author Denis Apparicio
  * 
  */
-public class Album {
+public class Album implements Parcelable {
 
 	private Artist artist;
 
@@ -65,5 +68,51 @@ public class Album {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeParcelable(this.artist, flags);
+		dest.writeString(this.id);
+		dest.writeString(this.title);
+		dest.writeString(this.cover);
+		dest.writeList(this.tracks);
+	}
+
+	protected Album(Parcel in) {
+		this.artist = in.readParcelable(Artist.class.getClassLoader());
+		this.id = in.readString();
+		this.title = in.readString();
+		this.cover = in.readString();
+		this.tracks = new ArrayList<Track>();
+		in.readList(this.tracks, Track.class.getClassLoader());
+	}
+
+	public static final Parcelable.Creator<Album> CREATOR = new Parcelable.Creator<Album>() {
+		@Override
+		public Album createFromParcel(Parcel source) {
+			return new Album(source);
+		}
+
+		@Override
+		public Album[] newArray(int size) {
+			return new Album[size];
+		}
+	};
+
+	@Override
+	public String toString() {
+		return "Album{" +
+				"artist=" + artist +
+				", id='" + id + '\'' +
+				", title='" + title + '\'' +
+				", cover='" + cover + '\'' +
+				", tracks=" + tracks +
+				'}';
 	}
 }
