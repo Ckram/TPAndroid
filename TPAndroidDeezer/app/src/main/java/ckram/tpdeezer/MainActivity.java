@@ -1,5 +1,7 @@
 package ckram.tpdeezer;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +21,8 @@ import javax.xml.parsers.ParserConfigurationException;
 public class MainActivity extends AppCompatActivity {
     public static String TAG = "ActivityChercher";
     EditText nomAuteur;
-    List <Album> albums;
+    ArrayList <Album> albums;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(List<Album> albumsTemp) {
-                albums = albumsTemp;
+                albums = (ArrayList<Album>)albumsTemp;
                 for (Album album : albums)
                     Log.d(TAG,album.toString());
+                Intent intent = new Intent(MainActivity.this, ActivityAlboums.class);
+
+
+                intent.putParcelableArrayListExtra("albums", albums);
+                startActivity(intent);
+
             }
         };
         a.execute(nomAuteur.getText().toString());
