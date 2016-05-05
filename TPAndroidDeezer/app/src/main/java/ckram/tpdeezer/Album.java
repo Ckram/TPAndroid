@@ -25,7 +25,17 @@ public class Album implements Parcelable {
 	public Album() {		
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Album{" +
+				"artist=" + artist +
+				", id='" + id + '\'' +
+				", title='" + title + '\'' +
+				", cover='" + cover + '\'' +
+				", tracks=" + tracks +
+				'}';
+	}
+
 	public void addTrack(Track title) {
 		tracks.add(title);
 	}
