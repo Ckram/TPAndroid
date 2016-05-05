@@ -20,6 +20,10 @@
         <activity
             android:name=".ActivityAlboums"
             android:label="@string/title_activity_activity_alboums"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ActivityTraques"
+            android:label="@string/title_activity_activity_traques"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
