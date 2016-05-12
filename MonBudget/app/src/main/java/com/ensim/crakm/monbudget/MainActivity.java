@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         com.github.clans.fab.FloatingActionButton fabCreer = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fabAjouterTransactionPositive);
         if (fabCreer != null) {
 
