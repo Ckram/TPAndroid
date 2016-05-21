@@ -4,42 +4,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="20dp"
     android:orientation="vertical"
     tools:showIn="@layout/activity_create_transaction">
 
 
-    <LinearLayout
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layoutRevenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:padding="@dimen/activity_vertical_margin"
+        android:layout_height="wrap_content">
 
-        android:id="@+id/layoutRevenu">
-        <TextView
-            android:id="@+id/textViewRevenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/size_text_form"
-            android:text="Revenu : "/>
         <EditText
-            android:id="@+id/editTextRevenu"
-            android:layout_toRightOf="@id/textViewRevenu"
+            android:id="@+id/revenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:textSize="@dimen/size_text_form"
-            android:singleLine="true"/>
-    </LinearLayout>
-    <View
-        style="@style/Divider"
-        android:layout_below="@id/layoutRevenu"/>
+            android:inputType="phone"
+            android:maxLines="1"
+            android:hint="Revenu" />
+
+    </android.support.design.widget.TextInputLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutRevenu"
-        android:padding="@dimen/activity_vertical_margin"
         android:id="@+id/layoutDate">
         <TextView
             android:id="@+id/textViewDate"
@@ -56,48 +44,41 @@
             android:clickable="true"
             android:onClick="afficherDateDialog"/>
     </LinearLayout>
-    <View
-        style="@style/Divider"
-        android:layout_below="@id/layoutDate"/>
-    <LinearLayout
-        android:id="@+id/layoutCategorie"
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutDate"
-        android:padding="@dimen/activity_vertical_margin">
-        <TextView
-            android:id="@+id/textViewCategorie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Categorie :"
-            android:textSize="@dimen/size_text_form"/>
-        <Spinner
-            android:id="@+id/spinnerCategorie"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
-    </LinearLayout>
-    <View
-        style="@style/Divider"
-        android:layout_below="@id/layoutCategorie"/>
-    <LinearLayout
+        app:ms_multiline="false"
+        app:ms_hint="Catégorie">
+
+    </fr.ganfra.materialspinner.MaterialSpinner>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layoutDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutCategorie"
-        android:padding="@dimen/activity_vertical_margin">
+        android:layout_below="@id/spinner">
+
         <EditText
+            android:id="@+id/editTextDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/size_text_form"
-            android:hint="Description"
-            android:singleLine="true"/>
-    </LinearLayout>
+            android:maxLines="1"
+            android:inputType="text"
+            android:hint="Description" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/fabModifierTransaction"
+        android:id="@+id/validerTransaction"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:src="@drawable/ic_done"
+        android:paddingRight="-16dp"
+        android:paddingLeft="-16dp"
         app:fab_colorNormal="@color/colorAccent"
         app:fab_size="normal"
         fab:fab_colorPressed="@color/colorAccentDark"
@@ -105,5 +86,5 @@
         android:layout_gravity="end|bottom"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:onClick=""/>
+        android:onClick="creerTransaction"/>
 </RelativeLayout>
