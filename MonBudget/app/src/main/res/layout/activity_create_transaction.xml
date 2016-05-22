@@ -14,7 +14,7 @@
         android:background="?attr/colorPrimary">
     </android.support.v7.widget.Toolbar>
 
-    <include layout="@layout/activity_create_transaction_content"
+    <include layout="@layout/content_create_transaction"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

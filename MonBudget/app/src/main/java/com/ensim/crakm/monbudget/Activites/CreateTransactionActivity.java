@@ -23,8 +23,10 @@ import com.ensim.crakm.monbudget.Model.Categorie;
 import com.ensim.crakm.monbudget.Model.Transaction;
 import com.ensim.crakm.monbudget.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -39,10 +41,12 @@ public class CreateTransactionActivity extends AppCompatActivity {
     private int annee;
     private int mois;
     private int jour;
+    private boolean signe;
     String TAG = "CreationTransac";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        signe = this.getIntent().getBooleanExtra("pos",true);
         setContentView(R.layout.activity_create_transaction);
         revenu = (EditText) findViewById(R.id.revenu);
         description = (EditText) findViewById(R.id.editTextDescription);
@@ -50,8 +54,11 @@ public class CreateTransactionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         textViewDatePicker = (TextView) findViewById(R.id.textViewDatePicker);
         spinnerCategorie = (MaterialSpinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.categories_array,R.layout.adapter_categorie);
+        List <String> list = new ArrayList<>(Categorie.categories.keySet());
+        ArrayAdapter<CharSequence> adapter =
+                new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,list);
+                /*ArrayAdapter.createFromResource(this,
+                R.array.categories_array,R.layout.adapter_categorie);*/
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategorie.setAdapter(adapter);
         initialiserTextDatePicker();
@@ -119,18 +126,20 @@ public class CreateTransactionActivity extends AppCompatActivity {
     };
     public void creerTransaction()
     {
-        Log.d(TAG,"BOUTON");
+
         Transaction temp = new Transaction(new Date(annee,mois,jour),
                 Float.parseFloat(revenu.getText().toString()),
                 description.getText().toString(),
                 Categorie.categories.get(spinnerCategorie.getSelectedItem()));
+        if (!signe)
+            temp.setMontant(-temp.getMontant());
         Transaction.transactions.add(temp);
         DatabaseHelper helper = new DatabaseHelper(CreateTransactionActivity.this);
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION,temp.getDescription());
         values.put(DatabaseContract.TableTransaction.COLUMN_NAME_MONTANT,temp.getMontant());
-        values.put(DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE,temp.getCategorie().toString());
+        values.put(DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE,temp.getCategorie().getNomCategorie());
         long newRowId;
         newRowId = db.insert(
                 DatabaseContract.TableTransaction.TABLE_NAME,

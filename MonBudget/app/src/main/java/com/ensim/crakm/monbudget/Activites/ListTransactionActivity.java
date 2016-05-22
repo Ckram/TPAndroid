@@ -68,7 +68,7 @@ class TransactionArrayAdapter extends ArrayAdapter<Transaction>
 
         holder.montant.setText(Float.toString(transaction.getMontant()));
         holder.description.setText(transaction.getDescription());
-        holder.categorie.setText(transaction.getCategorie().toString());
+        holder.categorie.setText(transaction.getCategorie().getNomCategorie());
 
 
         /*

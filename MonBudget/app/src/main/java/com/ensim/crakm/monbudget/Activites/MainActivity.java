@@ -39,10 +39,9 @@ public class MainActivity extends AppCompatActivity
         AsyncTask asyncTask = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] params) {
-                ArrayList<Transaction> transactions = new ArrayList<Transaction>();
                 DatabaseHelper helper = new DatabaseHelper(MainActivity.this);
                 SQLiteDatabase db = helper.getReadableDatabase();
-                String[] projection = {
+                String[] projectionTransaction = {
                         DatabaseContract.TableTransaction._ID,
                         DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION,
                         DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE,
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity
                 };
                 Cursor c = db.query(
                         DatabaseContract.TableTransaction.TABLE_NAME,  // The table to query
-                        projection,                               // The columns to return
+                        projectionTransaction,                               // The columns to return
                         null,                                // The columns for the WHERE clause
                         null,                            // The values for the WHERE clause
                         null,                                     // don't group the rows
@@ -66,6 +65,19 @@ public class MainActivity extends AppCompatActivity
                     Transaction.transactions.add(transTemp);
                     Log.d(TAG, transTemp.toString());
                 }
+                String[] projectionCategorie = { DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE};
+                c = db.query(DatabaseContract.TableCategories.TABLE_NAME,
+                        projectionCategorie,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+                while (c.moveToNext())
+                {
+                    Categorie.GetCategorie(c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE)));
+                }
                 return null;
 
             }
@@ -80,15 +92,27 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        com.github.clans.fab.FloatingActionButton fabCreer = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fabAjouterTransactionPositive);
-        Log.d(TAG,"Il y a rien");
-        if (fabCreer != null) {
-            Log.d(TAG,"Il y a qqch");
-            fabCreer.setOnClickListener(new View.OnClickListener() {
+        com.github.clans.fab.FloatingActionButton nouvelleTransacPos = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fabAjouterTransactionPositive);
+        if (nouvelleTransacPos != null) {
+
+            nouvelleTransacPos.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG,"Appuie fab +");
                     Intent intentCreerTransaction = new Intent(MainActivity.this,CreateTransactionActivity.class);
+                    intentCreerTransaction.putExtra("pos",true);
+                    startActivity(intentCreerTransaction);
+
+                }
+            });
+        }
+        com.github.clans.fab.FloatingActionButton nouvelleTransacNeg = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fabAjouterTransactionNegative);
+        if (nouvelleTransacNeg != null) {
+
+            nouvelleTransacNeg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intentCreerTransaction = new Intent(MainActivity.this,CreateTransactionActivity.class);
+                    intentCreerTransaction.putExtra("pos",false);
                     startActivity(intentCreerTransaction);
 
                 }
@@ -164,11 +188,11 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this,ListTransactionActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
-
-
-
+            Intent intent = new Intent(MainActivity.this,CreateCategorieActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
-
+            Intent intent = new Intent(MainActivity.this,PieChartActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
