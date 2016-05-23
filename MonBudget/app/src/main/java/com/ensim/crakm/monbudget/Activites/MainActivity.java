@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,18 +25,25 @@ import com.ensim.crakm.monbudget.Database.DatabaseHelper;
 import com.ensim.crakm.monbudget.Model.Categorie;
 import com.ensim.crakm.monbudget.Model.Transaction;
 import com.ensim.crakm.monbudget.R;
+import com.github.clans.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        /*implements NavigationView.OnNavigationItemSelectedListener*/ {
     String TAG = "MainActivity";
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
+    private NavigationView nvDrawer;
+    private ActionBarDrawerToggle drawerToggle;
+    private com.github.clans.fab.FloatingActionButton nouvelleTransacPos;
+    com.github.clans.fab.FloatingActionButton nouvelleTransacNeg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         AsyncTask asyncTask = new AsyncTask() {
             @Override
@@ -92,7 +101,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        com.github.clans.fab.FloatingActionButton nouvelleTransacPos = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fabAjouterTransactionPositive);
+        nouvelleTransacPos = (FloatingActionButton) findViewById(R.id.fabAjouterTransactionPositive);
         if (nouvelleTransacPos != null) {
 
             nouvelleTransacPos.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +114,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
-        com.github.clans.fab.FloatingActionButton nouvelleTransacNeg = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fabAjouterTransactionNegative);
+        nouvelleTransacNeg = (FloatingActionButton) findViewById(R.id.fabAjouterTransactionNegative);
         if (nouvelleTransacNeg != null) {
 
             nouvelleTransacNeg.setOnClickListener(new View.OnClickListener() {
@@ -119,18 +128,18 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout2);
-        if(drawer == null)
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout2);
+        if(mDrawer == null)
         {
             Log.d(TAG,"NULL A LA CON");
         }
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        drawerToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        //nvDrawer.setNavigationItemSelectedListener(this);
+        setupDrawerContent(nvDrawer);
         Resources resources = getResources();
         String[] categories = resources.getStringArray(R.array.categories_array);
         for (String s : categories)
@@ -145,6 +154,52 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    private void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass = null;
+        switch(menuItem.getItemId()) {
+            case R.id.nav_camera:
+                fragmentClass = ListTransactionActivity.class;
+                break;
+            case R.id.nav_gallery:
+                //fragmentClass = SecondFragment.class;
+                break;
+            case R.id.nav_slideshow:
+                //fragmentClass = ThirdFragment.class;
+                break;
+            default:
+                fragmentClass = ListTransactionActivity.class;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
+    }
 
 
     @Override
@@ -163,7 +218,7 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -204,5 +259,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout2);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }*/
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
     }
+
+
 }

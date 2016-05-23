@@ -16,17 +16,31 @@ import com.ensim.crakm.monbudget.R;
 
 import java.util.ArrayList;
 
-public class ListTransactionActivity extends AppCompatActivity {
-
+public class ListTransactionActivity extends android.support.v4.app.Fragment {
+    private TransactionArrayAdapter adapter;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_transaction);
-        ListView listViewTransac = (ListView) findViewById(R.id.listViewTransactions);
-        TransactionArrayAdapter adapter = new TransactionArrayAdapter(this,R.layout.list_item_transaction, Transaction.transactions);
-        listViewTransac.setAdapter(adapter);
+
+        adapter = new TransactionArrayAdapter(getActivity(),R.layout.list_item_transaction, Transaction.transactions);
+
 
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_list_transaction, parent, false);
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        ListView listViewTransac = (ListView) view.findViewById(R.id.listViewTransactions);
+        listViewTransac.setAdapter(adapter);
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
 }
 
 class TransactionArrayAdapter extends ArrayAdapter<Transaction>
