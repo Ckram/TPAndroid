@@ -4,6 +4,9 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.ensim.crakm.monbudget.Model.Categorie;
 import com.ensim.crakm.monbudget.Model.Transaction;
@@ -20,15 +23,16 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PieChartActivity extends AppCompatActivity {
+public class PieChartActivity extends android.support.v4.app.Fragment {
 
     PieChart chart;
+    PieData data;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pie_chart);
 
-        chart = (PieChart) findViewById(R.id.chart);
+
+
         List<String> listCategories= new ArrayList<>(Categorie.categories.keySet());
         Log.d("chart",listCategories.toString() + "patate");
         int[] listNbTransacParCategorie = new int[listCategories.size()];
@@ -76,16 +80,27 @@ public class PieChartActivity extends AppCompatActivity {
         colors.add(ColorTemplate.getHoloBlue());
 
         dataSet.setColors(colors);
-        PieData data = new PieData(listCategories, dataSet);
+        data = new PieData(listCategories, dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
 
 
+
+
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view,savedInstanceState);
+        chart = (PieChart) view.findViewById(R.id.chart);
         chart.setData(data);
         chart.highlightValues(null);
 
         chart.invalidate();
 
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_pie_chart, parent, false);
     }
 }

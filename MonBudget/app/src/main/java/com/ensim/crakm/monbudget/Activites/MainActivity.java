@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
-        /*implements NavigationView.OnNavigationItemSelectedListener*/ {
+        implements NavigationView.OnNavigationItemSelectedListener {
     String TAG = "MainActivity";
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
@@ -138,8 +138,8 @@ public class MainActivity extends AppCompatActivity
         drawerToggle.syncState();
 
         nvDrawer = (NavigationView) findViewById(R.id.nav_view);
-        //nvDrawer.setNavigationItemSelectedListener(this);
-        setupDrawerContent(nvDrawer);
+        nvDrawer.setNavigationItemSelectedListener(this);
+        //setupDrawerContent(nvDrawer);
         Resources resources = getResources();
         String[] categories = resources.getStringArray(R.array.categories_array);
         for (String s : categories)
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    /*private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -163,9 +163,9 @@ public class MainActivity extends AppCompatActivity
                         return true;
                     }
                 });
-    }
+    }*/
 
-    private void selectDrawerItem(MenuItem menuItem) {
+    /*private void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass = null;
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity
         setTitle(menuItem.getTitle());
         // Close the navigation drawer
         mDrawer.closeDrawers();
-    }
+    }*/
 
 
     @Override
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    /*
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -237,29 +237,40 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            Intent intent = new Intent(MainActivity.this,ListTransactionActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(MainActivity.this,CreateCategorieActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(MainActivity.this,PieChartActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        Fragment fragment = null;
+        Class fragmentClass = null;
+        switch(item.getItemId()) {
+            case R.id.nav_camera:
+                fragmentClass = ListTransactionActivity.class;
+                break;
+            case R.id.nav_gallery:
+                fragmentClass = PieChartActivity.class;
+                break;
+            case R.id.nav_slideshow:
+                //fragmentClass = ThirdFragment.class;
+                break;
+            default:
+                fragmentClass = ListTransactionActivity.class;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout2);
-        drawer.closeDrawer(GravityCompat.START);
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        // Highlight the selected item has been done by NavigationView
+        item.setChecked(true);
+        // Set action bar title
+        setTitle(item.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
         return true;
-    }*/
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

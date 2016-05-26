@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class ListTransactionActivity extends android.support.v4.app.Fragment {
     private TransactionArrayAdapter adapter;
+    ListView listViewTransac;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +34,10 @@ public class ListTransactionActivity extends android.support.v4.app.Fragment {
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        ListView listViewTransac = (ListView) view.findViewById(R.id.listViewTransactions);
+
+        listViewTransac = (ListView) view.findViewById(R.id.listViewTransactions);
         listViewTransac.setAdapter(adapter);
+        super.onViewCreated(view,savedInstanceState);
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
