@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -36,7 +37,7 @@ public class CreateTransactionActivity extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
     Spinner spinnerCategorie;
     Toolbar toolbar;
-    EditText revenu;
+    EditText montant;
     EditText description;
     private int annee;
     private int mois;
@@ -48,7 +49,12 @@ public class CreateTransactionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         signe = this.getIntent().getBooleanExtra("pos",true);
         setContentView(R.layout.activity_create_transaction);
-        revenu = (EditText) findViewById(R.id.revenu);
+        montant = (EditText) findViewById(R.id.revenu);
+        TextInputLayout layout = (TextInputLayout) findViewById(R.id.layoutRevenu);
+        if (!signe)
+        {
+            layout.setHint("Dépense");
+        }
         description = (EditText) findViewById(R.id.editTextDescription);
         toolbar = (Toolbar) findViewById(R.id.toolbarTrans);
         setSupportActionBar(toolbar);
@@ -128,12 +134,15 @@ public class CreateTransactionActivity extends AppCompatActivity {
     {
 
         Transaction temp = new Transaction(new Date(annee,mois,jour),
-                Float.parseFloat(revenu.getText().toString()),
+                Float.parseFloat(montant.getText().toString()),
                 description.getText().toString(),
                 Categorie.categories.get(spinnerCategorie.getSelectedItem()));
         if (!signe)
+        {
             temp.setMontant(-temp.getMontant());
-        Transaction.transactions.add(temp);
+
+        }
+        Transaction.addTransaction(temp);
         DatabaseHelper helper = new DatabaseHelper(CreateTransactionActivity.this);
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -147,7 +156,7 @@ public class CreateTransactionActivity extends AppCompatActivity {
                 values);
 
         Log.d(TAG,temp.toString());
-        Log.d(TAG,Transaction.transactions.toString());
+
     }
 
 }

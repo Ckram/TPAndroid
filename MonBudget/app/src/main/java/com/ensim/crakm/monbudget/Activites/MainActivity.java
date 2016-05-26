@@ -71,8 +71,7 @@ public class MainActivity extends AppCompatActivity
                     String description = c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION));
 
                     Transaction transTemp = new Transaction(new Date(), montant, description, Categorie.GetCategorie(categorie));
-                    Transaction.transactions.add(transTemp);
-                    Log.d(TAG, transTemp.toString());
+                    Transaction.addTransaction(transTemp);
                 }
                 String[] projectionCategorie = { DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE};
                 c = db.query(DatabaseContract.TableCategories.TABLE_NAME,
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             protected void onPostExecute(Object o) {
-                Log.d(TAG,Transaction.transactions.toString());
+
                 super.onPostExecute(o);
             }
         };

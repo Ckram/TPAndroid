@@ -22,10 +22,10 @@ public class ListTransactionActivity extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        adapter = new TransactionArrayAdapter(getActivity(),R.layout.list_item_transaction, Transaction.transactions);
-
-
+        ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+        transactions.addAll(Transaction.getTransactionsNeg());
+        transactions.addAll(Transaction.getTransactionsPos());
+        adapter = new TransactionArrayAdapter(getActivity(),R.layout.list_item_transaction, transactions);
     }
 
     @Override

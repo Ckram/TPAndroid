@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ensim.crakm.monbudget.ChartUtil.EuroValueFormatter;
 import com.ensim.crakm.monbudget.Model.Categorie;
 import com.ensim.crakm.monbudget.Model.Transaction;
 import com.ensim.crakm.monbudget.R;
@@ -20,6 +21,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,25 +37,36 @@ public class PieChartActivity extends android.support.v4.app.Fragment {
 
         List<String> listCategories= new ArrayList<>(Categorie.categories.keySet());
         Log.d("chart",listCategories.toString() + "patate");
-        int[] listNbTransacParCategorie = new int[listCategories.size()];
-        float[] listPourcentages = new float[listCategories.size()];
+
         List<Entry> entries = new ArrayList<Entry>();
+        List<Transaction> transactions = Transaction.getTransactionsNeg();
+        Log.d("chart",transactions.toString());
+        List<String> listCategoriesUsed = new ArrayList<String>();
         for (int i = 0; i< listCategories.size();i++)
         {
-            listNbTransacParCategorie[i]=0;
+            for(Transaction t : transactions)
+            {
+                if (t.getCategorie().getNomCategorie()==listCategories.get(i) && !listCategoriesUsed.contains(listCategories.get(i)))
+                    listCategoriesUsed.add(listCategories.get(i));
+
+            }
+            //listNbTransacParCategorie[i]=0;
         }
-        Log.d("chart",listNbTransacParCategorie.toString() + "carotte");
-        for (Transaction t : Transaction.transactions)
+        int[] listMontantParCategorie = new int[listCategoriesUsed.size()];
+        float[] listPourcentages = new float[listCategoriesUsed.size()];
+        Log.d("chart",listCategoriesUsed.toString());
+        Log.d("chart",listMontantParCategorie.toString() + "carotte");
+        for (Transaction t : Transaction.getTransactionsNeg())
         {
-            int index = listCategories.indexOf(t.getCategorie().getNomCategorie());
-            listNbTransacParCategorie[index]++;
+            int index = listCategoriesUsed.indexOf(t.getCategorie().getNomCategorie());
+            listMontantParCategorie[index]+= t.getMontant();
 
         }
-        for (int i = 0; i<listNbTransacParCategorie.length;i++)
+        for (int i = 0; i<listMontantParCategorie.length;i++)
         {
-            Log.d("chart",listNbTransacParCategorie[i]+"");
-            Log.d("chart",Transaction.transactions.size()+"size");
-            listPourcentages[i]=(float)listNbTransacParCategorie[i]/Transaction.transactions.size()*100;
+            Log.d("chart",listMontantParCategorie[i]+"");
+
+            listPourcentages[i]=(float)listMontantParCategorie[i]/Transaction.getSommeDepense();
             entries.add(new Entry(listPourcentages[i],i));
             Log.d("chart",""+listPourcentages[i]);
         }
@@ -80,10 +93,10 @@ public class PieChartActivity extends android.support.v4.app.Fragment {
         colors.add(ColorTemplate.getHoloBlue());
 
         dataSet.setColors(colors);
-        data = new PieData(listCategories, dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
+        data = new PieData(listCategoriesUsed, dataSet);
+        data.setValueFormatter(new EuroValueFormatter());
+        data.setValueTextSize(15f);
+        data.setValueTextColor(Color.BLACK);
 
 
 
@@ -95,7 +108,8 @@ public class PieChartActivity extends android.support.v4.app.Fragment {
         chart = (PieChart) view.findViewById(R.id.chart);
         chart.setData(data);
         chart.highlightValues(null);
-
+        chart.setUsePercentValues(false);
+        chart.getLegend().setEnabled(false);
         chart.invalidate();
 
     }
