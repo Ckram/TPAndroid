@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_create_transaction">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layoutRevenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/revenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:hint="Revenu" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutRevenu"
+        android:id="@+id/layoutDate">
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_form"
+            android:text="Date : "/>
+        <TextView
+            android:id="@+id/textViewDatePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textSize="@dimen/size_text_form"
+            android:clickable="true"
+            android:onClick="afficherDateDialog"/>
+    </LinearLayout>
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutDate"
+        app:ms_multiline="false"
+        app:ms_hint="Catégorie">
+
+    </fr.ganfra.materialspinner.MaterialSpinner>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layoutDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinner">
+
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="text"
+            android:hint="Description" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/validerTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_done"
+        android:paddingRight="-16dp"
+        android:paddingLeft="-16dp"
+        app:fab_colorNormal="@color/colorAccent"
+        app:fab_size="normal"
+        app:fab_colorPressed="@color/colorAccentDark"
+
+        android:layout_gravity="end|bottom"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:onClick="creerTransaction"/>
+</RelativeLayout>
