@@ -57,11 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 for (Album album : albums)
                     Log.d(TAG,album.toString());
                 Intent intent = new Intent(MainActivity.this, ActivityAlboums.class);
-
-
                 intent.putParcelableArrayListExtra("albums", albums);
                 startActivity(intent);
-
             }
         };
         a.execute(nomAuteur.getText().toString());

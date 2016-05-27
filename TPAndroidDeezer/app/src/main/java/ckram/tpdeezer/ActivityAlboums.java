@@ -71,8 +71,6 @@ public class ActivityAlboums extends AppCompatActivity {
                         for (Track track : tracks)
                             Log.d(TAG,track.toString());
                         Intent intent = new Intent(ActivityAlboums.this, ActivityTraques.class);
-
-
                         intent.putParcelableArrayListExtra("tracks", tracks);
                         startActivity(intent);
 

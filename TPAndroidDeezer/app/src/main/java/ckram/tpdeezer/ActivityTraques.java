@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +32,7 @@ public class ActivityTraques extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mediaPlayer = new MediaPlayer();
         setContentView(R.layout.activity_activity_traques);
         tracks = this.getIntent().getParcelableArrayListExtra("tracks");
         listView = (ListView) findViewById(R.id.listViewTracks);
@@ -41,8 +43,16 @@ public class ActivityTraques extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mediaPlayer = new MediaPlayer();
                 try {
+                    if (mediaPlayer!=null) {
+                        mediaPlayer.stop();
+                        mediaPlayer.reset();
+                     }
+                    else
+                    {
+                        mediaPlayer= new MediaPlayer();
+                    }
+
                     mediaPlayer.setDataSource(tracks.get(position-1).getPreview());
                     mediaPlayer.prepare();
                     mediaPlayer.start();
@@ -50,6 +60,18 @@ public class ActivityTraques extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }});
+    }
+
+    @Override
+    protected void onPause() {
+        mediaPlayer.reset();
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        mediaPlayer.release();
+        super.onStop();
     }
 }
 
