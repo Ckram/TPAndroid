@@ -32,9 +32,27 @@ public class PieChartActivity extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setData();
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view,savedInstanceState);
+        chart = (PieChart) view.findViewById(R.id.chart);
+        chart.setData(data);
+        chart.setHoleColor(getResources().getColor(R.color.colorPrimaryLight)/*Color.parseColor("#C8E6C9")*/);
+        chart.highlightValues(null);
+        chart.setUsePercentValues(false);
+        chart.getLegend().setEnabled(false);
+        chart.invalidate();
 
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_pie_chart, parent, false);
+    }
 
-
+    private void setData()
+    {
         List<String> listCategories= new ArrayList<>(Categorie.categories.keySet());
         Log.d("chart",listCategories.toString() + "patate");
 
@@ -97,24 +115,5 @@ public class PieChartActivity extends android.support.v4.app.Fragment {
         data.setValueFormatter(new EuroValueFormatter());
         data.setValueTextSize(15f);
         data.setValueTextColor(Color.BLACK);
-
-
-
-
-    }
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
-        chart = (PieChart) view.findViewById(R.id.chart);
-        chart.setData(data);
-        chart.highlightValues(null);
-        chart.setUsePercentValues(false);
-        chart.getLegend().setEnabled(false);
-        chart.invalidate();
-
-    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_pie_chart, parent, false);
     }
 }

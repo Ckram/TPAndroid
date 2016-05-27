@@ -7,11 +7,12 @@ import android.provider.BaseColumns;
  */
 public class DatabaseContract {
 
-    public static final  int    DATABASE_VERSION   = 3;
+    public static final  int    DATABASE_VERSION   = 4;
     public static final  String DATABASE_NAME      = "database.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String VARCHAR_TYPE = " CHAR(255)";
     private static final String FLOAT_TYPE = " FLOAT";
+    private static final String INTEGER_TYPE = " INTEGER";
 
     private static final String COMMA_SEP = ",";
     private DatabaseContract(){}
@@ -22,6 +23,7 @@ public class DatabaseContract {
         public static final String COLUMN_NAME_MONTANT = "montant";
         public static final String COLUMN_NAME_CATEGORIE = "categorie";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
+        public static final String COLUMN_NAME_DATE = "date";
 
 
         public static final String SQL_CREATE_ENTRIES =
@@ -30,7 +32,8 @@ public class DatabaseContract {
                         TableTransaction.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                         TableTransaction.COLUMN_NAME_MONTANT + FLOAT_TYPE + COMMA_SEP +
                         TableTransaction.COLUMN_NAME_CATEGORIE + VARCHAR_TYPE +COMMA_SEP +
-                        TableTransaction.COLUMN_NAME_DESCRIPTION + TEXT_TYPE +
+                        TableTransaction.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+                        TableTransaction.COLUMN_NAME_DATE + INTEGER_TYPE+
                 " )";
 
         public static final String SQL_DELETE_ENTRIES =

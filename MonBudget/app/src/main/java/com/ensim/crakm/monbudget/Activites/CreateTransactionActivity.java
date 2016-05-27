@@ -112,6 +112,7 @@ public class CreateTransactionActivity extends AppCompatActivity {
         textViewDatePicker.setText(new StringBuilder().append(jour).append("/")
                 .append(mois+1).append("/").append(annee));
 
+
     }
     public void afficherDateDialog(View v)
     {
@@ -133,7 +134,7 @@ public class CreateTransactionActivity extends AppCompatActivity {
     public void creerTransaction()
     {
 
-        Transaction temp = new Transaction(new Date(annee,mois,jour),
+        Transaction temp = new Transaction(new Date(annee -1900,mois,jour),
                 Float.parseFloat(montant.getText().toString()),
                 description.getText().toString(),
                 Categorie.categories.get(spinnerCategorie.getSelectedItem()));
@@ -142,6 +143,7 @@ public class CreateTransactionActivity extends AppCompatActivity {
             temp.setMontant(-temp.getMontant());
 
         }
+        Log.d(TAG,temp.getDateString());
         Transaction.addTransaction(temp);
         DatabaseHelper helper = new DatabaseHelper(CreateTransactionActivity.this);
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -149,13 +151,14 @@ public class CreateTransactionActivity extends AppCompatActivity {
         values.put(DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION,temp.getDescription());
         values.put(DatabaseContract.TableTransaction.COLUMN_NAME_MONTANT,temp.getMontant());
         values.put(DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE,temp.getCategorie().getNomCategorie());
+        values.put(DatabaseContract.TableTransaction.COLUMN_NAME_DATE,temp.getDate().getTime());
         long newRowId;
         newRowId = db.insert(
                 DatabaseContract.TableTransaction.TABLE_NAME,
                 "null",
                 values);
 
-        Log.d(TAG,temp.toString());
+        Log.d(TAG,Integer.toString(annee));
 
     }
 

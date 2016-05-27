@@ -80,8 +80,6 @@
         android:paddingLeft="-16dp"
         app:fab_colorNormal="@color/colorAccent"
         app:fab_size="normal"
-        app:fab_colorPressed="@color/colorAccentDark"
-
         android:layout_gravity="end|bottom"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

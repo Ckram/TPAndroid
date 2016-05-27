@@ -3,6 +3,10 @@ package com.ensim.crakm.monbudget.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -56,6 +60,13 @@ public class Transaction implements Parcelable {
     //endregion
 
     //region Getters & Setters
+    public String getDateString()
+    {
+        DateFormat dfl = DateFormat.getDateInstance(DateFormat.FULL);
+        return dfl.format(date);
+
+    }
+
     public static ArrayList<Transaction> getTransactionsNeg() {
         return transactionsNeg;
     }

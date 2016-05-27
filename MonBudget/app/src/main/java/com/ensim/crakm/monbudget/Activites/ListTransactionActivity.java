@@ -29,6 +29,12 @@ public class ListTransactionActivity extends android.support.v4.app.Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_list_transaction, parent, false);
     }
@@ -73,6 +79,7 @@ class TransactionArrayAdapter extends ArrayAdapter<Transaction>
             holder.montant = (TextView)ligne.findViewById(R.id.montantTransaction);
             holder.description = (TextView)ligne.findViewById(R.id.descriptionTransaction);
             holder.categorie = (TextView)ligne.findViewById(R.id.categorieTransaction);
+            holder.date = (TextView)ligne.findViewById(R.id.dateTransaction);
 
             ligne.setTag(holder);
         }
@@ -86,6 +93,7 @@ class TransactionArrayAdapter extends ArrayAdapter<Transaction>
         holder.montant.setText(Float.toString(transaction.getMontant()));
         holder.description.setText(transaction.getDescription());
         holder.categorie.setText(transaction.getCategorie().getNomCategorie());
+        holder.date.setText(transaction.getDateString());
 
 
         /*
@@ -102,5 +110,6 @@ class TransactionArrayAdapter extends ArrayAdapter<Transaction>
         TextView montant;
         TextView description;
         TextView categorie;
+        TextView date;
     }
 }

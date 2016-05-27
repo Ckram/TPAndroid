@@ -21,25 +21,22 @@
             android:src="@drawable/ic_create"
             app:fab_colorNormal="#757575"
             app:fab_size="mini"
-            fab:fab_colorPressed="@color/colorAccentDark"
             fab:fab_colorRipple="@color/colorAccent"/>
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabAjouterTransactionNegative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_minus"
-            app:fab_colorNormal="#f44336"
+            app:fab_colorNormal="@color/colorAccent"
             app:fab_size="mini"
-            fab:fab_colorPressed="@color/colorAccentDark"
             fab:fab_colorRipple="@color/colorAccent"/>
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabAjouterTransactionPositive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_add"
-            app:fab_colorNormal="#689f38"
+            app:fab_colorNormal="@color/colorPrimary"
             app:fab_size="mini"
-            fab:fab_colorPressed="@color/colorAccentDark"
             fab:fab_colorRipple="@color/colorAccent"/>
     </com.github.clans.fab.FloatingActionMenu>
 </LinearLayout>

@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity
                         DatabaseContract.TableTransaction._ID,
                         DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION,
                         DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE,
-                        DatabaseContract.TableTransaction.COLUMN_NAME_MONTANT
+                        DatabaseContract.TableTransaction.COLUMN_NAME_MONTANT,
+                        DatabaseContract.TableTransaction.COLUMN_NAME_DATE
                 };
                 Cursor c = db.query(
                         DatabaseContract.TableTransaction.TABLE_NAME,  // The table to query
@@ -63,14 +64,16 @@ public class MainActivity extends AppCompatActivity
                         null,                            // The values for the WHERE clause
                         null,                                     // don't group the rows
                         null,                                     // don't filter by row groups
-                        null                                 // The sort order
+                        DatabaseContract.TableTransaction.COLUMN_NAME_DATE +" DESC"                // The sort order
                 );
                 while (c.moveToNext()) {
                     float montant = c.getFloat(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_MONTANT));
                     String categorie = c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE));
                     String description = c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION));
+                    long dateInLong = c.getLong(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_DATE));
+                    Date date = new Date(dateInLong);
 
-                    Transaction transTemp = new Transaction(new Date(), montant, description, Categorie.GetCategorie(categorie));
+                    Transaction transTemp = new Transaction(date, montant, description, Categorie.GetCategorie(categorie));
                     Transaction.addTransaction(transTemp);
                 }
                 String[] projectionCategorie = { DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE};
@@ -153,52 +156,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    /*private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
-                });
-    }*/
 
-    /*private void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass = null;
-        switch(menuItem.getItemId()) {
-            case R.id.nav_camera:
-                fragmentClass = ListTransactionActivity.class;
-                break;
-            case R.id.nav_gallery:
-                //fragmentClass = SecondFragment.class;
-                break;
-            case R.id.nav_slideshow:
-                //fragmentClass = ThirdFragment.class;
-                break;
-            default:
-                fragmentClass = ListTransactionActivity.class;
-        }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        mDrawer.closeDrawers();
-    }*/
 
 
     @Override
@@ -246,7 +204,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentClass = PieChartActivity.class;
                 break;
             case R.id.nav_slideshow:
-                //fragmentClass = ThirdFragment.class;
+                fragmentClass = CreateCategorieActivity.class;
                 break;
             default:
                 fragmentClass = ListTransactionActivity.class;

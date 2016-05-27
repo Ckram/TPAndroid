@@ -27,16 +27,14 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <com.github.clans.fab.FloatingActionButton
+    <Button
         android:id="@+id/validerNouvelleCategorie"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_done"
-        app:fab_colorNormal="@color/colorAccent"
-        app:fab_size="normal"
-        app:fab_colorPressed="@color/colorAccentDark"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:onClick="creerTransaction"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/layoutNomCategorie"
+        android:text="Ajouter"
+        android:background="@color/colorAccent"/>
 
 </RelativeLayout>

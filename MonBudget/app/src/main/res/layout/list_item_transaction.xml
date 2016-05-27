@@ -19,6 +19,12 @@
         android:layout_alignBaseline="@id/categorieTransaction"
         android:layout_alignParentRight="true"
         android:id="@+id/montantTransaction"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/descriptionTransaction"
+        android:layout_alignParentRight="true"
+        android:id="@+id/dateTransaction"/>
 
 
 </RelativeLayout>
