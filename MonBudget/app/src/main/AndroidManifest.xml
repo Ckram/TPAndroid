@@ -22,12 +22,7 @@
             android:name=".Activites.CreateTransactionActivity"
             android:label="Transaction"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activites.ListTransactionActivity" />
-        <activity
-            android:name=".Activites.CreateCategorieActivity"
-            android:label="@string/title_activity_create_categorie"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".Activites.PieChartActivity"></activity>
+
     </application>
 
 </manifest>

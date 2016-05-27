@@ -3,30 +3,26 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:checked="true"
+            android:id="@+id/list_transactions"
             android:icon="@drawable/ic_list"
             android:title="Transactions" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/pie_chart"
             android:icon="@drawable/ic_chart_arc_black_24dp"
             android:title="Transaction par catégorie" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/add_category"
             android:icon="@drawable/ic_sitemap_black_24dp"
             android:title="Ajouter catégorie" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+
     </group>
 
     <item android:title="Communicate" >
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/settings"
+                android:icon="@drawable/ic_settings"
+                android:title="Paramètres" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"

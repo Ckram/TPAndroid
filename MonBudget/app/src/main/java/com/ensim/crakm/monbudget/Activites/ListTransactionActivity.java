@@ -2,12 +2,16 @@ package com.ensim.crakm.monbudget.Activites;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,15 +26,18 @@ public class ListTransactionActivity extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-        transactions.addAll(Transaction.getTransactionsNeg());
-        transactions.addAll(Transaction.getTransactionsPos());
-        adapter = new TransactionArrayAdapter(getActivity(),R.layout.list_item_transaction, transactions);
+        adapter = new TransactionArrayAdapter(getActivity(),R.layout.list_item_transaction, Transaction.getAllTransactions());
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         adapter.notifyDataSetChanged();
     }
 
@@ -43,6 +50,15 @@ public class ListTransactionActivity extends android.support.v4.app.Fragment {
 
         listViewTransac = (ListView) view.findViewById(R.id.listViewTransactions);
         listViewTransac.setAdapter(adapter);
+        listViewTransac.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(),CreateTransactionActivity.class);
+                intent.putExtra("positionUpdate",position);
+                startActivity(intent);
+                return false;
+            }
+        });
         super.onViewCreated(view,savedInstanceState);
     }
     @Override
@@ -80,6 +96,7 @@ class TransactionArrayAdapter extends ArrayAdapter<Transaction>
             holder.description = (TextView)ligne.findViewById(R.id.descriptionTransaction);
             holder.categorie = (TextView)ligne.findViewById(R.id.categorieTransaction);
             holder.date = (TextView)ligne.findViewById(R.id.dateTransaction);
+            holder.logo = (ImageView) ligne.findViewById(R.id.logoTransaction);
 
             ligne.setTag(holder);
         }
@@ -90,10 +107,17 @@ class TransactionArrayAdapter extends ArrayAdapter<Transaction>
 
         Transaction transaction = transactions.get(position);
 
-        holder.montant.setText(Float.toString(transaction.getMontant()));
+        holder.montant.setText(Float.toString(transaction.getMontant())+" €");
         holder.description.setText(transaction.getDescription());
         holder.categorie.setText(transaction.getCategorie().getNomCategorie());
         holder.date.setText(transaction.getDateString());
+        if (transaction.getMontant() > 0)
+        {
+            holder.logo.setImageResource(R.drawable.plus);
+        }else
+        {
+            holder.logo.setImageResource(R.drawable.minus);
+        }
 
 
         /*
@@ -111,5 +135,6 @@ class TransactionArrayAdapter extends ArrayAdapter<Transaction>
         TextView description;
         TextView categorie;
         TextView date;
+        ImageView logo;
     }
 }

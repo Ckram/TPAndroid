@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -16,12 +18,14 @@ import java.util.Date;
 public class Transaction implements Parcelable {
     private static ArrayList<Transaction> transactionsPos = new ArrayList<Transaction>();
     private static ArrayList<Transaction> transactionsNeg = new ArrayList<Transaction>();
+    private static ArrayList<Transaction> allTransactions = new ArrayList<Transaction>();
     private static float sommmeRevenu =0;
     private  static float sommeDepense = 0;
     private float montant;
     private Date date;
     private String description;
     private Categorie categorie;
+    private long id;
 
 
     /**
@@ -31,7 +35,7 @@ public class Transaction implements Parcelable {
      */
     public static Transaction addTransaction(Transaction transac)
     {
-
+        allTransactions.add(transac);
         if (transac.montant>=0)
         {
             transactionsPos.add(transac);
@@ -47,6 +51,21 @@ public class Transaction implements Parcelable {
 
     }
 
+    public static void removeTransaction(int index)
+    {
+        Transaction transactionToDelete =allTransactions.get(index) ;
+        if (transactionToDelete.montant>=0)
+        {
+            sommmeRevenu -= transactionToDelete.montant;
+            transactionsPos.remove(transactionToDelete);
+        }else
+        {
+            sommeDepense -= transactionToDelete.montant;
+            transactionsNeg.remove(transactionToDelete);
+        }
+        Transaction.allTransactions.remove(index);
+    }
+
 
     //region constructor
     public Transaction(Date date, float montant, String description, Categorie categorie) {
@@ -60,6 +79,28 @@ public class Transaction implements Parcelable {
     //endregion
 
     //region Getters & Setters
+
+
+    public static ArrayList<Transaction> getAllTransactions() {
+        Collections.sort(allTransactions, new Comparator<Transaction>() {
+            @Override
+            public int compare(Transaction lhs, Transaction rhs) {
+                if (lhs.getDate().getTime()>rhs.getDate().getTime())
+                    return -1;
+                else return 0;
+            }
+        });
+        return allTransactions;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getDateString()
     {
         DateFormat dfl = DateFormat.getDateInstance(DateFormat.FULL);
@@ -137,6 +178,7 @@ public class Transaction implements Parcelable {
                 ", date=" + date +
                 ", description='" + description + '\'' +
                 ", categorie=" + categorie +
+                ", id=" + id +
                 '}';
     }
     //endregion
@@ -153,6 +195,7 @@ public class Transaction implements Parcelable {
         dest.writeLong(this.date != null ? this.date.getTime() : -1);
         dest.writeString(this.description);
         dest.writeParcelable(this.categorie, flags);
+        dest.writeLong(this.id);
     }
 
     protected Transaction(Parcel in) {
@@ -161,6 +204,7 @@ public class Transaction implements Parcelable {
         this.date = tmpDate == -1 ? null : new Date(tmpDate);
         this.description = in.readString();
         this.categorie = in.readParcelable(Categorie.class.getClassLoader());
+        this.id = in.readLong();
     }
 
     public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {

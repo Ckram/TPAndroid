@@ -5,7 +5,8 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
-    tools:showIn="@layout/activity_create_transaction">
+    tools:showIn="@layout/activity_create_transaction"
+    android:id="@+id/relativeLayoutCreationTransaction">
 
 
     <android.support.design.widget.TextInputLayout
@@ -17,7 +18,7 @@
             android:id="@+id/revenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
+            android:inputType="numberDecimal"
             android:maxLines="1"
             android:hint="Revenu" />
 

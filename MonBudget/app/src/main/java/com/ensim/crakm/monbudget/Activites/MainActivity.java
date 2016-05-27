@@ -27,7 +27,6 @@ import com.ensim.crakm.monbudget.Model.Transaction;
 import com.ensim.crakm.monbudget.R;
 import com.github.clans.fab.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
@@ -45,64 +44,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        AsyncTask asyncTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-                DatabaseHelper helper = new DatabaseHelper(MainActivity.this);
-                SQLiteDatabase db = helper.getReadableDatabase();
-                String[] projectionTransaction = {
-                        DatabaseContract.TableTransaction._ID,
-                        DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION,
-                        DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE,
-                        DatabaseContract.TableTransaction.COLUMN_NAME_MONTANT,
-                        DatabaseContract.TableTransaction.COLUMN_NAME_DATE
-                };
-                Cursor c = db.query(
-                        DatabaseContract.TableTransaction.TABLE_NAME,  // The table to query
-                        projectionTransaction,                               // The columns to return
-                        null,                                // The columns for the WHERE clause
-                        null,                            // The values for the WHERE clause
-                        null,                                     // don't group the rows
-                        null,                                     // don't filter by row groups
-                        DatabaseContract.TableTransaction.COLUMN_NAME_DATE +" DESC"                // The sort order
-                );
-                while (c.moveToNext()) {
-                    float montant = c.getFloat(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_MONTANT));
-                    String categorie = c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE));
-                    String description = c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION));
-                    long dateInLong = c.getLong(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_DATE));
-                    Date date = new Date(dateInLong);
-
-                    Transaction transTemp = new Transaction(date, montant, description, Categorie.GetCategorie(categorie));
-                    Transaction.addTransaction(transTemp);
-                }
-                String[] projectionCategorie = { DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE};
-                c = db.query(DatabaseContract.TableCategories.TABLE_NAME,
-                        projectionCategorie,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null
-                );
-                while (c.moveToNext())
-                {
-                    Categorie.GetCategorie(c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE)));
-                }
-                return null;
-
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-
-                super.onPostExecute(o);
-            }
-        };
-        asyncTask.execute();
-
-
-
+        populerListes();
         nouvelleTransacPos = (FloatingActionButton) findViewById(R.id.fabAjouterTransactionPositive);
         if (nouvelleTransacPos != null) {
 
@@ -155,7 +97,66 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+    private void populerListes()
+    {
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+                DatabaseHelper helper = new DatabaseHelper(MainActivity.this);
+                SQLiteDatabase db = helper.getReadableDatabase();
+                String[] projectionTransaction = {
+                        DatabaseContract.TableTransaction._ID,
+                        DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION,
+                        DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE,
+                        DatabaseContract.TableTransaction.COLUMN_NAME_MONTANT,
+                        DatabaseContract.TableTransaction.COLUMN_NAME_DATE
+                };
+                Cursor c = db.query(
+                        DatabaseContract.TableTransaction.TABLE_NAME,  // The table to query
+                        projectionTransaction,                               // The columns to return
+                        null,                                // The columns for the WHERE clause
+                        null,                            // The values for the WHERE clause
+                        null,                                     // don't group the rows
+                        null,                                     // don't filter by row groups
+                        DatabaseContract.TableTransaction.COLUMN_NAME_DATE +" DESC"                // The sort order
+                );
+                while (c.moveToNext()) {
+                    float montant = c.getFloat(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_MONTANT));
+                    String categorie = c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_CATEGORIE));
+                    String description = c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_DESCRIPTION));
+                    long dateInLong = c.getLong(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction.COLUMN_NAME_DATE));
+                    long id = c.getLong(c.getColumnIndexOrThrow(DatabaseContract.TableTransaction._ID));
+                    Date date = new Date(dateInLong);
 
+                    Transaction transTemp = new Transaction(date, montant, description, Categorie.GetCategorie(categorie));
+                    transTemp.setId(id);
+                    Transaction.addTransaction(transTemp);
+                }
+                String[] projectionCategorie = { DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE};
+                c = db.query(DatabaseContract.TableCategories.TABLE_NAME,
+                        projectionCategorie,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+                while (c.moveToNext())
+                {
+                    Categorie.GetCategorie(c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE)));
+                }
+                return null;
+
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+
+                super.onPostExecute(o);
+            }
+        };
+        asyncTask.execute();
+    }
 
 
 
@@ -197,13 +198,13 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         Class fragmentClass = null;
         switch(item.getItemId()) {
-            case R.id.nav_camera:
+            case R.id.list_transactions:
                 fragmentClass = ListTransactionActivity.class;
                 break;
-            case R.id.nav_gallery:
+            case R.id.pie_chart:
                 fragmentClass = PieChartActivity.class;
                 break;
-            case R.id.nav_slideshow:
+            case R.id.add_category:
                 fragmentClass = CreateCategorieActivity.class;
                 break;
             default:
