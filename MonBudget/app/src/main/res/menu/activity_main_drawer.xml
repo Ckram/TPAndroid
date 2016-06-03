@@ -14,6 +14,10 @@
             android:id="@+id/add_category"
             android:icon="@drawable/ic_sitemap_black_24dp"
             android:title="Ajouter catégorie" />
+        <item
+            android:id="@+id/mes_budgets"
+            android:icon="@drawable/ic_sitemap_black_24dp"
+            android:title="Ajouter catégorie" />
 
     </group>
 

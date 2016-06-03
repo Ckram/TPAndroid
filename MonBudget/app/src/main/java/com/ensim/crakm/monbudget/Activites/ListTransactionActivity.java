@@ -3,6 +3,7 @@ package com.ensim.crakm.monbudget.Activites;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,15 +19,46 @@ import android.widget.TextView;
 import com.ensim.crakm.monbudget.Model.Transaction;
 import com.ensim.crakm.monbudget.R;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+
+import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class ListTransactionActivity extends android.support.v4.app.Fragment {
     private TransactionArrayAdapter adapter;
+    private ArrayAdapter categorieAdapter;
+    private ArrayList<Transaction> transactionsToPrint;
+    String [] mois;
+    Calendar calendar;
+
     ListView listViewTransac;
+    MaterialSpinner spinnerChoix;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new TransactionArrayAdapter(getActivity(),R.layout.list_item_transaction, Transaction.getAllTransactions());
+
+         calendar = Calendar.getInstance();
+
+        transactionsToPrint = Transaction.getTransactionsInMonth(calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR));
+
+        mois = DateFormatSymbols.getInstance(Locale.FRANCE).getMonths();
+        for (int i=0; i<mois.length;i++)
+        {
+            mois[i]= StringUtils.capitalize(mois[i]);
+            Log.d("Transactions",mois[i]);
+        }
+        adapter = new TransactionArrayAdapter(getActivity(),R.layout.list_item_transaction, transactionsToPrint);
+
+        categorieAdapter = new ArrayAdapter(getContext(),R.layout.support_simple_spinner_dropdown_item,mois);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
     }
 
     @Override
@@ -59,6 +91,25 @@ public class ListTransactionActivity extends android.support.v4.app.Fragment {
                 return false;
             }
         });
+        spinnerChoix = (MaterialSpinner) view.findViewById(R.id.spinnerChoixTri);
+        spinnerChoix.setAdapter(categorieAdapter);
+        spinnerChoix.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                transactionsToPrint.clear();
+                transactionsToPrint.addAll(Transaction.getTransactionsInMonth(position,2016));
+
+                Log.d("Transactions",transactionsToPrint.toString());
+
+                adapter.notifyDataSetInvalidated();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinnerChoix.setSelection(calendar.get(Calendar.MONTH));
         super.onViewCreated(view,savedInstanceState);
     }
     @Override

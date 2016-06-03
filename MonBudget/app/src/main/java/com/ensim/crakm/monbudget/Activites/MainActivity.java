@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+
             super.onBackPressed();
         }
     }
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -206,6 +207,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.add_category:
                 fragmentClass = CreateCategorieActivity.class;
+                break;
+            case R.id.mes_budgets:
+                fragmentClass = MyBudgets.class;
                 break;
             default:
                 fragmentClass = ListTransactionActivity.class;

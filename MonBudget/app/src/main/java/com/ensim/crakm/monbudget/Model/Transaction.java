@@ -2,6 +2,7 @@ package com.ensim.crakm.monbudget.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 
 import java.text.DateFormat;
@@ -64,6 +65,18 @@ public class Transaction implements Parcelable {
             transactionsNeg.remove(transactionToDelete);
         }
         Transaction.allTransactions.remove(index);
+    }
+
+    public static ArrayList<Transaction> getTransactionsInMonth(int month,int year)
+    {
+        ArrayList transactionsInMonth = new ArrayList();
+        for (Transaction transaction : Transaction.allTransactions)
+        {
+
+            if (transaction.getDate().getMonth() == month && (transaction.getDate().getYear()+1900) ==year)
+                transactionsInMonth.add(transaction);
+        }
+        return transactionsInMonth;
     }
 
 
