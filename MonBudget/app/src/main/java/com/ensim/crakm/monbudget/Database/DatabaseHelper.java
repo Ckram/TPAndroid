@@ -16,12 +16,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL((DatabaseContract.TableTransaction.SQL_CREATE_ENTRIES));
         db.execSQL((DatabaseContract.TableCategories.SQL_CREATE_ENTRIES));
+        db.execSQL((DatabaseContract.TableBudgets.SQL_CREATE_ENTRIES));
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(DatabaseContract.TableTransaction.SQL_DELETE_ENTRIES);
         db.execSQL(DatabaseContract.TableCategories.SQL_DELETE_ENTRIES);
+        db.execSQL(DatabaseContract.TableBudgets.SQL_DELETE_ENTRIES);
         onCreate(db);
 
     }

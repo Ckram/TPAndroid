@@ -3,6 +3,7 @@ package com.ensim.crakm.monbudget.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -11,6 +12,7 @@ import java.util.HashMap;
 public class Categorie implements Parcelable {
     public static HashMap<String,Categorie> categories = new HashMap<String, Categorie>();
     String nomCategorie;
+    Budget budget;
 
 
     public static Categorie GetCategorie(String nomCategorie) {
@@ -22,7 +24,26 @@ public class Categorie implements Parcelable {
     private  Categorie(String s)
     {
         this.nomCategorie =s;
+        budget = new Budget();
+        budget.setTransactions(Transaction.getTransactions(this));
     };
+
+    public float getSpendingsInMonth()
+    {
+        float spendingInMonth = 0;
+        Calendar cal = Calendar.getInstance();
+        int moisCourant = cal.get(Calendar.MONTH);
+        int anneeCourante = cal.get(Calendar.YEAR);
+        for (Transaction transaction : Transaction.getTransactions(this))
+        {
+            cal.setTime(transaction.getDate());
+            if (cal.get(Calendar.MONTH)== moisCourant && cal.get(Calendar.YEAR)==anneeCourante)
+            {
+                spendingInMonth+=transaction.getMontant();
+            }
+        }
+        return spendingInMonth;
+    }
 
     public String getNomCategorie() {
         return nomCategorie;

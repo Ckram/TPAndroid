@@ -22,6 +22,7 @@ import android.view.MenuItem;
 
 import com.ensim.crakm.monbudget.Database.DatabaseContract;
 import com.ensim.crakm.monbudget.Database.DatabaseHelper;
+import com.ensim.crakm.monbudget.Model.Budget;
 import com.ensim.crakm.monbudget.Model.Categorie;
 import com.ensim.crakm.monbudget.Model.Transaction;
 import com.ensim.crakm.monbudget.R;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout2);
         if(mDrawer == null)
         {
-            Log.d(TAG,"NULL A LA CON");
+
         }
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(drawerToggle);
@@ -86,14 +87,13 @@ public class MainActivity extends AppCompatActivity
         //setupDrawerContent(nvDrawer);
         Resources resources = getResources();
         String[] categories = resources.getStringArray(R.array.categories_array);
-        for (String s : categories)
+        for (String c : categories)
         {
-            Categorie c = Categorie.GetCategorie(s);
+            Log.d(TAG, "onCreate: " + c);
+            Categorie.GetCategorie(c);
         }
-        for(String s : Categorie.categories.keySet())
-        {
-            Log.d(TAG,Categorie.categories.get(s).toString());
-        }
+
+
 
 
     }
@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity
                     Transaction transTemp = new Transaction(date, montant, description, Categorie.GetCategorie(categorie));
                     transTemp.setId(id);
                     Transaction.addTransaction(transTemp);
+                    Log.d(TAG, "doInBackground: " + Transaction.getAllTransactions());
                 }
                 String[] projectionCategorie = { DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE};
                 c = db.query(DatabaseContract.TableCategories.TABLE_NAME,
@@ -145,6 +146,28 @@ public class MainActivity extends AppCompatActivity
                 {
                     Categorie.GetCategorie(c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableCategories.COLUMN_NAME_NOMCATEGORIE)));
                 }
+                String[] projectionBudgets = {
+                        DatabaseContract.TableBudgets._ID,
+                        DatabaseContract.TableBudgets.COLUMN_NAME_CATEGORIE,
+                        DatabaseContract.TableBudgets.COLUMN_NAME_MONTANT
+                };
+                c = db.query(
+                        DatabaseContract.TableBudgets.TABLE_NAME,  // The table to query
+                        projectionBudgets,                               // The columns to return
+                        null,                                // The columns for the WHERE clause
+                        null,                            // The values for the WHERE clause
+                        null,                                     // don't group the rows
+                        null,                                     // don't filter by row groups
+                        null                // The sort order
+                );
+                while (c.moveToNext())
+                {
+                    float montantBudget = c.getFloat(c.getColumnIndexOrThrow(DatabaseContract.TableBudgets.COLUMN_NAME_MONTANT));
+                    Categorie categorie = Categorie.GetCategorie(c.getString(c.getColumnIndexOrThrow(DatabaseContract.TableBudgets.COLUMN_NAME_CATEGORIE)));
+                    //Budget.budgets.add(new Budget(Transaction.getTransactions(categorie),montantBudget,categorie));
+                    Budget budget = new Budget(Transaction.getTransactions(categorie),montantBudget,categorie);
+                }
+                Log.d(TAG, "doInBackground: " + Budget.budgets.toString());
                 return null;
 
             }

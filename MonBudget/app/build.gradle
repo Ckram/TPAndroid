@@ -32,4 +32,6 @@ dependencies {
     compile 'com.github.ganfra:material-spinner:1.1.1'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.felipecsl.asymmetricgridview:library:2.0.1'
+    compile 'com.afollestad.material-dialogs:core:0.8.5.8'
+
 }

@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
  */
 public class DatabaseContract {
 
-    public static final  int    DATABASE_VERSION   = 5;
+    public static final  int    DATABASE_VERSION   = 6;
     public static final  String DATABASE_NAME      = "database.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String VARCHAR_TYPE = " CHAR(255)";
@@ -57,5 +57,23 @@ public class DatabaseContract {
                 "DROP TABLE IF EXISTS "  + TableCategories.TABLE_NAME;
 
 
+    }
+
+    public static abstract class TableBudgets implements BaseColumns {
+        public static final String TABLE_NAME = "budgets";
+        public static final String COLUMN_NAME_CATEGORIE = "categorie";
+        public static final String COLUMN_NAME_MONTANT = "montantBudget";
+
+
+        public static final String SQL_CREATE_ENTRIES =
+                "CREATE TABLE " + TABLE_NAME + " (" +
+                        TableBudgets._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        TableBudgets.COLUMN_NAME_CATEGORIE + TEXT_TYPE + COMMA_SEP +
+                        TableBudgets.COLUMN_NAME_MONTANT + FLOAT_TYPE +
+                        " )";
+
+
+        public static final String SQL_DELETE_ENTRIES =
+                "DROP TABLE IF EXISTS "  + TableBudgets.TABLE_NAME;
     }
 }

@@ -92,7 +92,16 @@ public class Transaction implements Parcelable {
     //endregion
 
     //region Getters & Setters
-
+    public static ArrayList<Transaction> getTransactions(Categorie categorie)
+    {
+        ArrayList<Transaction> transactionsInCategory = new ArrayList<>();
+        for (Transaction transaction : allTransactions)
+        {
+            if (transaction.getCategorie().equals(categorie))
+                transactionsInCategory.add(transaction);
+        }
+        return transactionsInCategory;
+    }
 
     public static ArrayList<Transaction> getAllTransactions() {
         Collections.sort(allTransactions, new Comparator<Transaction>() {
