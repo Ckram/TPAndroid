@@ -6,7 +6,7 @@
         android:id="@+id/action_valider"
         android:orderInCategory="100"
         android:title="Valider"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_done_white"/>
 
     <item
@@ -15,5 +15,7 @@
         android:title="Supprimer"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_cancel_white"/>
+
+
 
 </menu>

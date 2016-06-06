@@ -46,6 +46,16 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         populerListes();
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Class startingFragment = ListTransactionActivity.class;
+        try {
+            fragmentManager.beginTransaction().replace(R.id.flContent, (Fragment)startingFragment.newInstance()).commit();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         nouvelleTransacPos = (FloatingActionButton) findViewById(R.id.fabAjouterTransactionPositive);
         if (nouvelleTransacPos != null) {
 
@@ -234,6 +244,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.mes_budgets:
                 fragmentClass = MyBudgets.class;
                 break;
+            case R.id.settings:
+                fragmentClass = Settings.class;
+                break;
+
             default:
                 fragmentClass = ListTransactionActivity.class;
         }

@@ -3,8 +3,6 @@ package com.ensim.crakm.monbudget.Activites;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -109,7 +107,7 @@ public class ListTransactionActivity extends android.support.v4.app.Fragment {
 
             }
         });
-        spinnerChoix.setSelection(calendar.get(Calendar.MONTH));
+        spinnerChoix.setSelection(calendar.get(Calendar.MONTH)+1);
         super.onViewCreated(view,savedInstanceState);
     }
     @Override

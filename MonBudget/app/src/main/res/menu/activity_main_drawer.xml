@@ -16,21 +16,17 @@
             android:title="Ajouter catégorie" />
         <item
             android:id="@+id/mes_budgets"
-            android:icon="@drawable/ic_sitemap_black_24dp"
-            android:title="Ajouter catégorie" />
+            android:icon="@drawable/ic_dashboard"
+            android:title="Mes budgets" />
 
     </group>
 
-    <item android:title="Communicate" >
+    <item android:title="Autres" >
         <menu>
             <item
                 android:id="@+id/settings"
                 android:icon="@drawable/ic_settings"
                 android:title="Paramètres" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
         </menu>
     </item>
 

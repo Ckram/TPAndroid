@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Marc on 04/06/2016.
  */
-public class Budget {
+public class Budget  {
     public static List<Budget> budgets = new ArrayList<Budget>();
     private List<Transaction> transactions;
     Categorie categorie;
@@ -72,4 +72,6 @@ public class Budget {
         }
         this.transactions = transactions;
     }
+
+
 }

@@ -14,14 +14,7 @@
         fab:menu_icon="@drawable/ic_action_add"
         app:menu_colorNormal="@color/colorAccent"
         >
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fabModifierTransaction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_create"
-            app:fab_colorNormal="#757575"
-            app:fab_size="mini"
-            fab:fab_colorRipple="@color/colorAccent"/>
+
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabAjouterTransactionNegative"
             android:layout_width="wrap_content"

@@ -3,11 +3,10 @@ package com.ensim.crakm.monbudget.Activites;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ensim.crakm.monbudget.Database.DatabaseContract;
 import com.ensim.crakm.monbudget.Database.DatabaseHelper;
@@ -27,7 +25,6 @@ import com.ensim.crakm.monbudget.Model.Categorie;
 import com.ensim.crakm.monbudget.Model.Transaction;
 import com.ensim.crakm.monbudget.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -68,6 +65,10 @@ public class CreateTransactionActivity extends AppCompatActivity {
         description = (EditText) findViewById(R.id.editTextDescription);
         toolbar = (Toolbar) findViewById(R.id.toolbarTrans);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36);
+        getSupportActionBar().setHomeButtonEnabled(true);
         textViewDatePicker = (TextView) findViewById(R.id.textViewDatePicker);
         spinnerCategorie = (MaterialSpinner) findViewById(R.id.spinner);
         list = new ArrayList<>(Categorie.categories.keySet());
@@ -165,10 +166,20 @@ public class CreateTransactionActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_supprimer) {
+            super.onBackPressed();
+            return true;
+        }else if (id == android.R.id.home) {
+            super.onBackPressed();
+            onBackPressed();
+            return true;
+        }else if (id == R.id.action_valider) {
+            creerTransaction();
             return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -201,6 +212,11 @@ public class CreateTransactionActivity extends AppCompatActivity {
     };
     public void creerTransaction()
     {
+        if (montant.getText().toString().equals("") || description.getText().equals(""))
+        {
+            Snackbar.make(relativeLayout,"Des champs ne sont pas remplis",Snackbar.LENGTH_LONG).show();
+            return;
+        }
         Date dateTransac = new Date(annee -1900,mois,jour);
         float montantTmp = Float.parseFloat(montant.getText().toString());
         String descString = description.getText().toString();

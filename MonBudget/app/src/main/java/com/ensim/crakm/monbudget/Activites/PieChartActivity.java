@@ -1,7 +1,6 @@
 package com.ensim.crakm.monbudget.Activites;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,16 +11,12 @@ import com.ensim.crakm.monbudget.ChartUtil.EuroValueFormatter;
 import com.ensim.crakm.monbudget.Model.Categorie;
 import com.ensim.crakm.monbudget.Model.Transaction;
 import com.ensim.crakm.monbudget.R;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +39,7 @@ public class PieChartActivity extends android.support.v4.app.Fragment {
         chart.setUsePercentValues(false);
         chart.getLegend().setEnabled(false);
         chart.invalidate();
+        
 
     }
     @Override
@@ -54,12 +50,10 @@ public class PieChartActivity extends android.support.v4.app.Fragment {
     private void setData()
     {
         List<String> listCategories= new ArrayList<>(Categorie.categories.keySet());
-        Log.d("chart",listCategories.toString() + "patate");
-
         List<Entry> entries = new ArrayList<Entry>();
         List<Transaction> transactions = Transaction.getTransactionsNeg();
-        Log.d("chart",transactions.toString());
         List<String> listCategoriesUsed = new ArrayList<String>();
+
         for (int i = 0; i< listCategories.size();i++)
         {
             for(Transaction t : transactions)
@@ -68,12 +62,10 @@ public class PieChartActivity extends android.support.v4.app.Fragment {
                     listCategoriesUsed.add(listCategories.get(i));
 
             }
-            //listNbTransacParCategorie[i]=0;
+
         }
         int[] listMontantParCategorie = new int[listCategoriesUsed.size()];
         float[] listPourcentages = new float[listCategoriesUsed.size()];
-        Log.d("chart",listCategoriesUsed.toString());
-        Log.d("chart",listMontantParCategorie.toString() + "carotte");
         for (Transaction t : Transaction.getTransactionsNeg())
         {
             int index = listCategoriesUsed.indexOf(t.getCategorie().getNomCategorie());

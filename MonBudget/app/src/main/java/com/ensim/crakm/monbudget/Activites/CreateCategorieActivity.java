@@ -4,9 +4,8 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +69,10 @@ public class CreateCategorieActivity extends Fragment {
                 DatabaseContract.TableCategories.TABLE_NAME,
                 "null",
                 values);
-        Toast.makeText(CreateCategorieActivity.this.getActivity(), "Catégorie "+ categorieTmp + "bien ajouté", Toast.LENGTH_SHORT).show();
+        Snackbar.make(getView(),"Nouvelle catégorie bien ajouté",Snackbar.LENGTH_SHORT).show();
+        db.close();
+
+
 
     }
 
